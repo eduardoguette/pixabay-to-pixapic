@@ -4,3 +4,17 @@
 * {
 	font-family: 'Inter', sans-serif !important;
 }
+.options::before{
+	content: "";
+	width: 15px;
+	height: 15px;
+	background: #1f2937; 
+
+	z-index: -1;
+	top: -5px;
+	left: 12em;
+	border-radius: 2px;
+	transform: rotate(45deg);
+
+	position: absolute;
+}
