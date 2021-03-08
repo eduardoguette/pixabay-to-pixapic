@@ -3,13 +3,13 @@ module.exports = {
   darkMode: false, // or 'media' or 'class'
   theme: {
     extend: {
-      top:{
-        "-13": "3.25rem"
+      top: {
+        '-13': '3.25rem',
       },
-      height:{
-        "hero": "550px",
-        "hero-md": "600px",
-      }
+      height: {
+        hero: '550px',
+        'hero-md': '600px',
+      },
     },
   },
   variants: {

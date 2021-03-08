@@ -1,20 +1,41 @@
-@import "./tailwind.css";
+@import './tailwind.css';
+
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400;500;600;700;800;900&display=swap');
 
 * {
-	font-family: 'Inter', sans-serif !important;
+  font-family: 'Inter', sans-serif !important;
 }
-.options::before{
-	content: "";
-	width: 15px;
-	height: 15px;
-	background: #1f2937; 
+.options::before {
+  content: '';
+  width: 15px;
+  height: 15px;
+  background: #1f2937;
 
-	z-index: -1;
-	top: -5px;
-	left: 12em;
-	border-radius: 2px;
-	transform: rotate(45deg);
+  z-index: -1;
+  top: -5px;
+  left: 12em;
+  border-radius: 2px;
+  transform: rotate(45deg);
 
-	position: absolute;
+  position: absolute;
+}
+
+.resultado {
+  transition: all linear 0.4s;
+  /* column-count: 4; */
+  /* display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(100px, 400px)); */
+}
+.resultado > div {
+  transition: all linear 0.4s;
+  animation: images 1s linear both;
+  opacity: 0;
+}
+@keyframes images {
+  from {
+    opacity: 0.5;
+  }
+  to {
+    opacity: 1;
+  }
 }
