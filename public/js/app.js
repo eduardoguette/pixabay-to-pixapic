@@ -82,12 +82,12 @@ window.onload = () => {
   observer.observe(document.querySelector('.observer'))
 }
 
-window.addEventListener('resize', () => {
-  while (divResultado.firstChild) {
-    divResultado.removeChild(divResultado.firstChild)
-  }
-  calcularColumns()
-})
+// window.addEventListener('resize', () => {
+//   while (divResultado.firstChild) {
+//     divResultado.removeChild(divResultado.firstChild)
+//   }
+//   calcularColumns()
+// })
 
 window.addEventListener('scroll', () => {
   // let alturas = []
