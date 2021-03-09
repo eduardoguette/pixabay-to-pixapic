@@ -75,7 +75,8 @@
               class="hero-background object-cover h-full">
           </picture>
         </div>
-        <div class="grid-hero absolute h-hero w-full bg-gray-900 bg-opacity-40 z-10" style="top: 70px">
+        <div class="grid-hero absolute h-hero w-full bg-gray-900 bg-opacity-40 z-10"
+          style="top: 70px">
           <div class="px-6 mx-auto md:w-10/12">
             <div class="title-hero text-white text-2xl font-bold text-center mt-32">
               <h1>
@@ -100,12 +101,13 @@
                         d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                     </svg>
                   </button>
-                  <input class="relative h-14 rounded-md px-14 w-full focus:outline-none" type="text"
-                    placeholder="Buscar imágenes, vectores y videos">
+                  <input class="relative h-14 rounded-md px-14 w-full focus:outline-none"
+                    type="text" placeholder="Buscar imágenes, vectores y videos">
                   <div class="select absolute right-1 bg-white py-1 px-2 top-0 mt-1">
                     <button type="button" id="btn-options"
                       class="flex items-center justify-between space-x-2 focus:outline-none  rounded-md focus:ring-2 py-2 px-2 focus:ring-gray-100 text-gray-400 hover:text-gray-600">
-                      <p class="font-normal seleccion" id="option-select" data-target="all">Fotos</p>
+                      <p class="font-normal seleccion" id="option-select" data-target="all">Fotos
+                      </p>
                       <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none"
                         viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -115,25 +117,31 @@
                   </div>
                 </div>
               </form>
-              <div class="options hidden  bg-gray-800 text-black border border-gray-700 z-30 w-60 absolute right-6 top-14 rounded-md shadow-md">
-                <nav class="text-white nav-options" >
+              <div
+                class="options hidden  bg-gray-800 text-black border border-gray-700 z-30 w-60 absolute right-6 top-14 rounded-md shadow-md">
+                <nav class="text-white nav-options">
                   <li class="px-4 py-2 list-none w-full hover:bg-gray-100 hover:text-black">
-                    <button data-target="all" class="w-full text-left focus:outline-none">Fotos</button>
+                    <button data-target="all"
+                      class="w-full text-left focus:outline-none">Fotos</button>
                   </li>
                   <li class="px-4 py-2 list-none w-full hover:bg-gray-100 hover:text-black">
-                    <button  data-target="photo" class="w-full text-left focus:outline-none">Imágenes</button>
+                    <button data-target="photo"
+                      class="w-full text-left focus:outline-none">Imágenes</button>
                   </li>
                   <li class="px-4 py-2 list-none w-full hover:bg-gray-100 hover:text-black">
-                    <button  data-target="vector" class="w-full text-left focus:outline-none">Vectores</button>
+                    <button data-target="vector"
+                      class="w-full text-left focus:outline-none">Vectores</button>
                   </li>
                   <li class="px-4 py-2 list-none w-full hover:bg-gray-100 hover:text-black">
-                    <button   data-target="illustration" class="w-full text-left focus:outline-none">Ilustraciones</button>
+                    <button data-target="illustration"
+                      class="w-full text-left focus:outline-none">Ilustraciones</button>
                   </li>
                 </nav>
               </div>
             </div>
             <div class="popular_searches px-5 mt-2 text-white">
-              <nav class="flex flex-wrap justify-center md:content-center opacity-60 md:opacity-50 text-xs text-center">    
+              <nav
+                class="flex flex-wrap justify-center md:content-center opacity-60 md:opacity-50 text-xs text-center">
                 Popular Images:&nbsp;
                 <a href="#">flores,&nbsp;</a>
                 <a href="#">mujer,&nbsp;</a>
@@ -154,9 +162,31 @@
         </div>
       </div>
     </section>
-    <div class="resultado flex justify-center space-x-5 mx-2 items-start" id="resultado">
+    <div class="resultado flex justify-center space-x-5 items-start mx-2" id="resultado">
 
     </div>
+    <div class="spinner w-full hidden justify-center">
+      <div class="lds-ellipsis">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+    </div>
+    <div class="observer py-5 w-full text-center"></div>
+    <div
+      class="hidden container-preview justify-center items-center img-preview rounded-md overflow-hidden fixed top-0 left-0 bottom-0 right-0 m-auto z-40">
+      <div class="wrapper flex justify-center flex-col items-center relative">
+
+        <button id="close-img-preview"
+          class="focus:outline-none close p-1 rounded absolute top-2 right-2 text-white">
+
+        </button>
+        <img loading="lazy" id="preview" class="object-cover bg-gray-800" src="" width="230"
+          height="403" alt="cities, caracas, venezuela">
+      </div>
+    </div>
+
   </main>
 
   <footer></footer>
