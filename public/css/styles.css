@@ -36,13 +36,7 @@ html{
   /* opacity: 0; */
 }
 
-.close{
-  background: url("../images/x-regular-24.png") center center no-repeat;
-  border-radius: 100%;
-  background-color: rgba(0,0,0,.1);
-  height: 30px;
-  width: 30px;
-}
+
 .container-preview{
   background: rgba(255,255,255,.05);
   backdrop-filter: blur(5px);
@@ -65,15 +59,22 @@ html{
   
 }
 
+.resultado img:hover{
+  filter: grayscale(55%);
+}
+
 .closing{
-  animation: closingPreview .4s ease-in-out both;
+  animation: closingPreview .2s ease-in-out both;
   
 }
 
 
 .opening{
-  animation: openPreview .4s ease-in-out both;
+  animation: openPreview .2s ease-in-out both;
   
+}
+button:focus{
+  box-shadow: 0 0 0 2px rgba(0,0,0,.2);
 }
 @keyframes closingPreview{
   from{

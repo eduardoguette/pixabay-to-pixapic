@@ -6,8 +6,9 @@ const spinner = document.querySelector('.spinner')
 const divResultado = document.querySelector('#resultado')
 const formulario = document.querySelector('form')
 const btnCloseImg = document.querySelector('.close')
-
+const pResultados = document.querySelector('.cantidad-resultados')
 const btnPreview = document.querySelector('#close-img-preview')
+const divPopular = document.querySelector('.popular_searches')
 
 let newPage = false
 let results = {}
@@ -22,12 +23,12 @@ window.onload = () => {
   })
   divOptions.addEventListener('click', optionSelec)
   formulario.addEventListener('submit', validarFormulario)
-
+  divPopular.addEventListener('click', popularSelected)
   // ampliar img
   divResultado.addEventListener('click', (e) => {
     const divPreview = document.querySelector('.img-preview')
     const imgPreview = document.querySelector('#preview')
-    if (e.target.tagName === 'BUTTON') {
+    if (e.target.tagName === 'IMG') {
       const imageFullScreen = e.target.parentElement.getAttribute('data-full-screen')
       imgPreview.setAttribute('src', imageFullScreen)
       divPreview.classList.remove('hidden')
@@ -50,8 +51,6 @@ window.onload = () => {
   })
 
   document.querySelector('.img-preview').addEventListener('click', (e) => {
- 
-
     const divPreview = document.querySelector('.img-preview')
     divPreview.classList.remove('opening')
     divPreview.classList.add('closing')
@@ -80,6 +79,19 @@ window.onload = () => {
     }
   })
   observer.observe(document.querySelector('.observer'))
+}
+
+function popularSelected(e) {
+  e.preventDefault(e)
+  if(e.target.tagName==="A"){
+    pagina = 1
+    while (divResultado.firstChild) {
+      divResultado.removeChild(divResultado.firstChild)
+    }
+    const busqueda = e.target.textContent.replace(',', '')
+    document.querySelector('input[type="text"]').value = busqueda
+    buscarImagenes()
+  }
 }
 
 // window.addEventListener('resize', () => {
@@ -121,6 +133,7 @@ function buscarImagenes() {
     .then((json) => {
       results = { ...json.hits }
       calcularColumns()
+      pResultados.textContent = json.total + ' Imágenes gratis de ' + busqueda
       // console.log(json.hits.length)
       newPage = true
       if (json.hits.length < 1) {
@@ -195,9 +208,7 @@ function pintarImagenes(columns, widthImg) {
 
     contenedor.innerHTML += `
     <div class="my-4 contenedor-img relative overflow-hidden" data-full-screen="${largeImageURL}">
-        <button class="focus:outline-none ampliar p-1 rounded absolute top-2 right-2 text-white">
-          
-        </button>
+      
         <img loading="lazy" class="bg-gray-200 rounded-md object-cover" src="${webformatURL}" width="${widthImg}" height="${webformatHeight}"  alt="${tags}">
         <div class="info-pic flex items-center justify-between px-1 py-2 w-full rounded-md ">
           <div class="like flex items-center text-white space-x-1">
