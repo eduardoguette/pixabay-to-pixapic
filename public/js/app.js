@@ -11,7 +11,7 @@ const btnPreview = document.querySelector('#close-img-preview')
 const divPopular = document.querySelector('.popular_searches')
 
 let newPage = false
-let results = {}
+let results = []
 let pagina = 1
 
 window.onload = () => {
@@ -69,22 +69,19 @@ window.onload = () => {
   const observer = new IntersectionObserver((entries) => {
     if (newPage) {
       pagina++
-      spinner.classList.remove('hidden')
-      spinner.classList.add('flex')
-      setTimeout(() => {
-        spinner.classList.remove('flex')
-        spinner.classList.add('hidden')
-        buscarImagenes()
-      }, 2000)
+      buscarImagenes()
     }
   })
   observer.observe(document.querySelector('.observer'))
+  buscarImagenes()
 }
 
 function popularSelected(e) {
   e.preventDefault(e)
-  if(e.target.tagName==="A"){
+  if (e.target.tagName === 'A') {
+    results = []
     pagina = 1
+    document.querySelector('.msg').innerHTML = ``
     while (divResultado.firstChild) {
       divResultado.removeChild(divResultado.firstChild)
     }
@@ -102,19 +99,21 @@ function popularSelected(e) {
 // })
 
 window.addEventListener('scroll', () => {
-  // let alturas = []
-  // document.querySelectorAll('.resultado > div').forEach((elem) => {
-  //   alturas = [...alturas, elem.offsetHeight]
-  // })
-  // let alturaFinal = Math.max(...alturas)
-  // // console.log(Math.max(...alturas))
-  // document.querySelector('.observer').style.top = alturaFinal + 'px'
+  let alturas = []
+  document.querySelectorAll('.resultado > div').forEach((elem) => {
+    alturas = [...alturas, elem.offsetHeight]
+  })
+  let alturaFinal = Math.max(...alturas)
+  //  console.log(alturas)
+  // console.log(Math.max(...alturas))
+  document.querySelector('.observer').style.top = alturaFinal - 2300 + 'px'
 })
 
 function validarFormulario(e) {
   e.preventDefault()
+  results = []
   newPage = true
-  document.querySelector('.observer').innerHTML = `<p class=" border-gray-400 rounded-sm mx-auto w-40"></p>`
+  document.querySelector('.msg').innerHTML = ``
   pagina = 1
   while (divResultado.firstChild) {
     divResultado.removeChild(divResultado.firstChild)
@@ -131,19 +130,18 @@ function buscarImagenes() {
   fetch(url)
     .then((resp) => resp.json())
     .then((json) => {
-      results = { ...json.hits }
-      calcularColumns()
+      results = [...results, json.hits]
+      calcularColumns(json.hits)
       pResultados.textContent = json.total + ' Imágenes gratis de ' + busqueda
       // console.log(json.hits.length)
       newPage = true
-      if (json.hits.length < 1) {
+      console.log(json.totalHits, results.flat(999).length)
+      if (results.flat(999).length >= json.totalHits) {
         newPage = false
         noMorePagination()
       }
     })
     .catch((err) => {
-      noMorePagination()
-      newPage = false
       console.log(err)
     })
 }
@@ -156,35 +154,35 @@ function optionSelec(e) {
   }
 }
 
-function calcularColumns() {
+function calcularColumns(data) {
   let cantidadColumn
   // 360  640  768px  1024px  1280px  1536px
   const widthUser = window.innerWidth
   if (widthUser < 460) {
     cantidadColumn = 1
-    pintarImagenes(cantidadColumn, 350)
+    pintarImagenes(data, cantidadColumn, 350)
   } else if (widthUser > 460 && widthUser <= 640) {
-    cantidadColumn = 2
-    pintarImagenes(cantidadColumn, 230)
+    cantidadColumn = 1
+    pintarImagenes(data, cantidadColumn, 550)
   } else if (widthUser > 640 && widthUser <= 768) {
-    cantidadColumn = 3
-    pintarImagenes(cantidadColumn, 230)
+    cantidadColumn = 2
+    pintarImagenes(data, cantidadColumn, 400)
   } else if (widthUser > 768 && widthUser <= 1024) {
-    cantidadColumn = 4
-    pintarImagenes(cantidadColumn, 230)
+    cantidadColumn = 3
+    pintarImagenes(data, cantidadColumn, 430)
   } else if (widthUser > 1024 && widthUser <= 1280) {
-    cantidadColumn = 5
-    pintarImagenes(cantidadColumn, 230)
+    cantidadColumn = 3
+    pintarImagenes(data, cantidadColumn, 430)
   } else if (widthUser > 1280 && widthUser <= 1536) {
-    cantidadColumn = 6
-    pintarImagenes(cantidadColumn, 230)
+    cantidadColumn = 3
+    pintarImagenes(data, cantidadColumn, 430)
   } else if (widthUser > 1536) {
-    cantidadColumn = 6
-    pintarImagenes(cantidadColumn, 250)
+    cantidadColumn = 3
+    pintarImagenes(data, cantidadColumn, 450)
   }
 }
 
-function pintarImagenes(columns, widthImg) {
+function pintarImagenes(data, columns, widthImg) {
   if (document.querySelectorAll('.resultado > div').length <= 0) {
     for (let i = 0; i < columns; i++) {
       const div = document.createElement('div')
@@ -198,34 +196,61 @@ function pintarImagenes(columns, widthImg) {
     columns = document.querySelectorAll('.resultado > div').length
   }
   let cont = 0
-
-  for (let i in results) {
-    const { webformatURL, favorites, largeImageURL, previewURL, previewHeight, previewWidth, webformatWidth, webformatHeight, tags } = results[i]
+  data.forEach((image) => {
+    const { webformatURL, favorites, largeImageURL, previewURL, previewHeight, previewWidth, webformatWidth, webformatHeight, tags } = image
     const selector = '.grid-masonry-' + cont
     let contenedor = document.querySelector(selector)
     cont++
     if (cont >= columns) cont = 0
+    // <!--img loading="lazy" class="bg-gray-200 object-cover loading" id="${Date.now()}" onload=loaded(id) src="${webformatURL}" width="${widthImg}" height="${webformatHeight}"  alt="${tags}"> -->
 
-    contenedor.innerHTML += `
-    <div class="my-4 contenedor-img relative overflow-hidden" data-full-screen="${largeImageURL}">
-      
-        <img loading="lazy" class="bg-gray-200 rounded-md object-cover" src="${webformatURL}" width="${widthImg}" height="${webformatHeight}"  alt="${tags}">
-        <div class="info-pic flex items-center justify-between px-1 py-2 w-full rounded-md ">
-          <div class="like flex items-center text-white space-x-1">
-            <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-            </svg>
-            <span class="font-medium text-xs">${favorites}</span>
-          </div>
-        </div>
-    </div>
-    
-    `
-  }
+    const divContenedor = document.createElement('div')
+    divContenedor.className = 'my-4 contenedor-img relative overflow-hidden'
+    divContenedor.dataset.fullscreen = largeImageURL
+
+    const id = Date.now()
+    const img = document.createElement('img')
+    img.className = 'bg-gray-200 object-cover loading'
+    img.id = id
+    img.loading = 'lazy'
+    img.src = webformatURL
+    img.height = webformatHeight
+    img.onload = () => {
+      let selector = id
+      setTimeout(() =>{
+        img.classList.remove('loading') 
+        img.classList.add('loaded')
+      }, 1000)
+    }
+
+    divContenedor.appendChild(img)
+    contenedor.appendChild(divContenedor)
+
+    // const divInfo = document.createElement('div')
+    // divInfo.className = 'info-pic flex items-center justify-between px-1 py-2 w-full rounded-md'
+    // divInfo.innerHTML `
+    //   <div class="like flex items-center text-white space-x-1">
+    //     <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    //       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+    //     </svg>
+    //     <span class="font-medium text-xs">${favorites}</span>
+    //   </div>
+    // `
+
+    // contenedor.appendChild(divInfo)
+  })
+  console.log(results)
 }
-
+/* function loaded(id){
+  let selector = id.toString()
+  console.log("loaded")
+  setTimeout(()=>{
+    document.getElementById(selector).classList.remove("loading")
+    document.getElementById(selector).classList.add("loaded")
+  }, 1000)
+} */
 function noMorePagination() {
-  document.querySelector('.observer').innerHTML = `
+  document.querySelector('.msg').innerHTML = `
   <p class="text-2xl font-bold text-center py-2">No hay mas resultados :( </p>
   <small class="font-medium text-center w-full py-2">Intenta con otra busqueda</small>
   
