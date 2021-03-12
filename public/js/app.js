@@ -13,7 +13,7 @@ const divPopular = document.querySelector('.popular_searches')
 let newPage = false
 let results = []
 let pagina = 1
-
+buscarImagenes()
 window.onload = () => {
   btnOptions.addEventListener('click', () => {
     divOptions.classList.toggle('hidden')
@@ -29,7 +29,7 @@ window.onload = () => {
     const divPreview = document.querySelector('.img-preview')
     const imgPreview = document.querySelector('#preview')
     if (e.target.tagName === 'IMG') {
-      const imageFullScreen = e.target.parentElement.getAttribute('data-full-screen')
+      const imageFullScreen = e.target.parentElement.getAttribute('data-fullscreen')
       imgPreview.setAttribute('src', imageFullScreen)
       divPreview.classList.remove('hidden')
 
@@ -51,13 +51,18 @@ window.onload = () => {
   })
 
   document.querySelector('.img-preview').addEventListener('click', (e) => {
-    const divPreview = document.querySelector('.img-preview')
-    divPreview.classList.remove('opening')
-    divPreview.classList.add('closing')
-    setTimeout(() => {
-      divPreview.classList.remove('closing')
-      divPreview.classList.add('hidden')
-    }, 500)
+    if(e.target.tagName==="IMG"){
+      e.target.classList.toggle('zoom-in')
+    }else{
+      const divPreview = document.querySelector('.img-preview')
+      document.querySelector('#preview').classList.remove('zoom-in')
+      divPreview.classList.remove('opening')
+      divPreview.classList.add('closing')
+      setTimeout(() => {
+        divPreview.classList.remove('closing')
+        divPreview.classList.add('hidden')
+      }, 200)
+    }
   })
 
   // cerrar imagen
@@ -73,7 +78,7 @@ window.onload = () => {
     }
   })
   observer.observe(document.querySelector('.observer'))
-  buscarImagenes()
+  // buscarImagenes()
 }
 
 function popularSelected(e) {
@@ -132,8 +137,7 @@ function buscarImagenes() {
     .then((json) => {
       results = [...results, json.hits]
       calcularColumns(json.hits)
-      pResultados.textContent = json.total + ' Imágenes gratis de ' + busqueda
-      // console.log(json.hits.length)
+       // console.log(json.hits.length)
       newPage = true
       console.log(json.totalHits, results.flat(999).length)
       if (results.flat(999).length >= json.totalHits) {
@@ -197,15 +201,13 @@ function pintarImagenes(data, columns, widthImg) {
   }
   let cont = 0
   data.forEach((image) => {
-    const { webformatURL, favorites, largeImageURL, previewURL, previewHeight, previewWidth, webformatWidth, webformatHeight, tags } = image
+    const { webformatURL, userImageURL, user, favorites, largeImageURL, previewURL, previewHeight, previewWidth, webformatWidth, webformatHeight, tags } = image
     const selector = '.grid-masonry-' + cont
     let contenedor = document.querySelector(selector)
     cont++
     if (cont >= columns) cont = 0
-    // <!--img loading="lazy" class="bg-gray-200 object-cover loading" id="${Date.now()}" onload=loaded(id) src="${webformatURL}" width="${widthImg}" height="${webformatHeight}"  alt="${tags}"> -->
-
     const divContenedor = document.createElement('div')
-    divContenedor.className = 'my-4 contenedor-img relative overflow-hidden'
+    divContenedor.className = 'my-6 contenedor-img relative overflow-hidden '
     divContenedor.dataset.fullscreen = largeImageURL
 
     const id = Date.now()
@@ -215,44 +217,63 @@ function pintarImagenes(data, columns, widthImg) {
     img.loading = 'lazy'
     img.src = webformatURL
     img.height = webformatHeight
+    img.width = widthImg
     img.onload = () => {
       let selector = id
       setTimeout(() =>{
         img.classList.remove('loading') 
         img.classList.add('loaded')
-      }, 1000)
+      }, 500)
     }
 
     divContenedor.appendChild(img)
     contenedor.appendChild(divContenedor)
+    const btnDownload = document.createElement('a')
+    btnDownload.setAttribute('rel', "nofollow")
+    btnDownload.setAttribute('target', "_blank")
+    btnDownload.href = largeImageURL+"?attachment"
+    btnDownload.className = "btn-download absolute z-50 bottom-3 right-3"
+    btnDownload.textContent = ""
+    
+    const divProfile = document.createElement('div')
+    divProfile.className = "user-container opacity-0 flex absolute bottom-0 py-3 px-3 w-full bg-gradient-to-t from-black to-transparent z-40 space-x-2 items-center"
+    divProfile.innerHTML = `
+    <img src="${userImageURL}" class="object-contain rounded-full" height="30" width="30" alt="image-${user}">
+    <p class="text-white font-medium text-sm">${user}</p>
+    `
+    const divLike = document.createElement('div')
+    divLike.className = "opacity-0 container-link  absolute z-40 top-2 rounded bg-gray-200 p-2 right-3 flex space-x-2 items-center justify-end"
+    divLike.innerHTML = `
+    <p class=" font-medium text-xs">${favorites}</p>
+    <svg class="w-4 h-4" fill="rgb(50, 50, 50)" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"></path></svg>
+    `
 
-    // const divInfo = document.createElement('div')
-    // divInfo.className = 'info-pic flex items-center justify-between px-1 py-2 w-full rounded-md'
-    // divInfo.innerHTML `
-    //   <div class="like flex items-center text-white space-x-1">
-    //     <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-    //       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-    //     </svg>
-    //     <span class="font-medium text-xs">${favorites}</span>
-    //   </div>
-    // `
+    divContenedor.appendChild(btnDownload)
+    divContenedor.appendChild(divProfile)
+    divContenedor.appendChild(divLike)
+    
 
-    // contenedor.appendChild(divInfo)
   })
   console.log(results)
 }
-/* function loaded(id){
-  let selector = id.toString()
-  console.log("loaded")
-  setTimeout(()=>{
-    document.getElementById(selector).classList.remove("loading")
-    document.getElementById(selector).classList.add("loaded")
-  }, 1000)
-} */
+ 
 function noMorePagination() {
   document.querySelector('.msg').innerHTML = `
   <p class="text-2xl font-bold text-center py-2">No hay mas resultados :( </p>
   <small class="font-medium text-center w-full py-2">Intenta con otra busqueda</small>
   
   `
+}
+
+
+// bgHero()
+function bgHero(){
+  const imgHero = document.querySelector('.img-hero')
+  fetch('https://pixabay.com/api/?key=13360577-1ec6494e0daacc37a199a6648&q=paisaje%C2%A0&image_type=all&per_page=100&page=1')
+  .then(resp => resp.json())
+  .then(img => imgHero.setAttribute('src', img.hits[Math.ceil(Math.random()*100)].largeImageURL))
+  .catch(err => {
+    console.log(err)
+    imgHero.setAttribute('src', "https://pixabay.com/get/gbd8c58c28db3bd388acab98174aafa9a7021917d6ccb8dcfc66e7613ecc9caa69bb61cbbb5dd0f0f3fef91c32933f530728e1b2e2072894b44680164af464efd_1280.jpg")
+  })
 }
