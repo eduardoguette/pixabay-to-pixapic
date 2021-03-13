@@ -28,11 +28,21 @@ window.onload = () => {
   divResultado.addEventListener('click', (e) => {
     const divPreview = document.querySelector('.img-preview')
     const imgPreview = document.querySelector('#preview')
+    const userImgPreview = document.querySelector('#user-img-preview')
+    const userNamePreview = document.querySelector('#name-user-preview')
+    const linkDownload = document.querySelector('#link-preview-img')
     if (e.target.tagName === 'IMG') {
       const imageFullScreen = e.target.parentElement.getAttribute('data-fullscreen')
+      console.log(e.target.parentElement)
+      const userImage = e.target.parentElement.querySelector('.user-container img').getAttribute('src')
+      const nameUser = e.target.parentElement.querySelector('.user-container p').textContent.trim()
+
+      userNamePreview.textContent = nameUser
+      linkDownload.setAttribute('href', imageFullScreen+'?attachment')
+      userImgPreview.setAttribute('src', userImage)
+      userImgPreview.setAttribute('alt', nameUser)
       imgPreview.setAttribute('src', imageFullScreen)
       divPreview.classList.remove('hidden')
-
       divPreview.classList.add('flex')
       divPreview.classList.add('opening')
     }
