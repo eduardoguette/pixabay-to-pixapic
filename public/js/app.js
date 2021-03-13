@@ -83,14 +83,13 @@ window.onload = () => {
   // scroll
   const observer = new IntersectionObserver((entries) => {
     if (newPage) {
-      console.log("entre")
+      console.log('entre')
       pagina++
       buscarImagenes()
     }
   })
 
-    if(newPage)
-    observer.observe(document.querySelector('.observer'))
+  if (newPage) observer.observe(document.querySelector('.observer'))
 
   // buscarImagenes()
 }
@@ -145,7 +144,7 @@ function buscarImagenes() {
       if (results.flat(999).length >= json.totalHits) {
         newPage = false
         noMorePagination()
-      }else{
+      } else {
         newPage = true
       }
     })
