@@ -9,6 +9,8 @@ const btnCloseImg = document.querySelector('.close')
 const pResultados = document.querySelector('.cantidad-resultados')
 const btnPreview = document.querySelector('#close-img-preview')
 const divPopular = document.querySelector('.popular_searches')
+const btnScrollTop = document.querySelector('.btn-scroll')
+
 
 let newPage = false
 let results = []
@@ -24,6 +26,11 @@ window.onload = () => {
   divOptions.addEventListener('click', optionSelec)
   formulario.addEventListener('submit', validarFormulario)
   divPopular.addEventListener('click', popularSelected)
+  btnScrollTop.addEventListener('click', () =>{
+    console.log("scroll")
+    window.scrollTo(0, 0)
+  })
+  
   // ampliar img
   divResultado.addEventListener('click', (e) => {
     const divPreview = document.querySelector('.img-preview')
@@ -292,6 +299,12 @@ function bgHero() {
 }
 
 window.addEventListener('scroll', () => {
+  if(window.scrollY > 10){
+    btnScrollTop.classList.remove('hidden')
+  }else{
+    
+    btnScrollTop.classList.add('hidden')
+  }
   document.querySelectorAll('.resultado img[src]').forEach((elem) => {
     if (elem.getAttribute('src') === '') {
       elem.setAttribute('src', 'http://www.jdevoto.cl/web/wp-content/uploads/2018/04/default-user-img.jpg')

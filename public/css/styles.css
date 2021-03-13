@@ -194,3 +194,20 @@ img[id="preview"][class*="zoom-in"] ~ div{
   top: 80px;
   right: 25px;
 }
+.btn-scroll{
+  height: 51px;
+  width: 50px;
+  border-radius: 100%;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' style='fill:white;transform:;-ms-filter:'%3E%3Cpath d='M3,19h18c0.372,0,0.713-0.207,0.886-0.536c0.173-0.329,0.148-0.727-0.063-1.033l-9-13c-0.373-0.539-1.271-0.539-1.645,0 l-9,13c-0.212,0.306-0.236,0.704-0.063,1.033C2.287,18.793,2.628,19,3,19z'%3E%3C/path%3E%3C/svg%3E") center center no-repeat;
+  background-size: 25px;
+  background-color: rgb(27, 27, 27);
+  box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.2);
+  position: fixed;
+  bottom: 200px;
+  right: 30px;
+}
+
+.btn-scroll:hover{
+  
+  background-color: rgb(62, 62, 62);
+}
