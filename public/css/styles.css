@@ -59,7 +59,7 @@ html {
 }
 
 .resultado div div {
-  animation: toUp ease-in-out 1s both;
+  animation: toUp ease-in-out .4s both;
 }
 .contenedor-img:hover img {
   filter: brightness(0.8);
@@ -68,10 +68,13 @@ html {
   filter: brightness(0.5);
 }
 @keyframes toUp {
-  from {
-    transform: translateY(200px);
+  0% {
+    transform: translateY(0px);
   }
-  to {
+  50% {
+    transform: translateY(40px);
+  }
+  100% {
     transform: translateY(0);
   }
 }
