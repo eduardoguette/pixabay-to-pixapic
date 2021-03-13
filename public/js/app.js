@@ -33,12 +33,12 @@ window.onload = () => {
     const linkDownload = document.querySelector('#link-preview-img')
     if (e.target.tagName === 'IMG') {
       const imageFullScreen = e.target.parentElement.getAttribute('data-fullscreen')
-      console.log(e.target.parentElement)
+      // console.log(e.target.parentElement)
       const userImage = e.target.parentElement.querySelector('.user-container img').getAttribute('src')
       const nameUser = e.target.parentElement.querySelector('.user-container p').textContent.trim()
 
       userNamePreview.textContent = nameUser
-      linkDownload.setAttribute('href', imageFullScreen+'?attachment')
+      linkDownload.setAttribute('href', imageFullScreen + '?attachment')
       userImgPreview.setAttribute('src', userImage)
       userImgPreview.setAttribute('alt', nameUser)
       imgPreview.setAttribute('src', imageFullScreen)
@@ -61,9 +61,9 @@ window.onload = () => {
   })
 
   document.querySelector('.img-preview').addEventListener('click', (e) => {
-    if(e.target.tagName==="IMG"){
+    if (e.target.tagName === 'IMG') {
       e.target.classList.toggle('zoom-in')
-    }else{
+    } else {
       const divPreview = document.querySelector('.img-preview')
       document.querySelector('#preview').classList.remove('zoom-in')
       divPreview.classList.remove('opening')
@@ -147,9 +147,9 @@ function buscarImagenes() {
     .then((json) => {
       results = [...results, json.hits]
       calcularColumns(json.hits)
-       // console.log(json.hits.length)
+      // console.log(json.hits.length)
       newPage = true
-      console.log(json.totalHits, results.flat(999).length)
+      // console.log(json.totalHits, results.flat(999).length)
       if (results.flat(999).length >= json.totalHits) {
         newPage = false
         noMorePagination()
@@ -230,8 +230,8 @@ function pintarImagenes(data, columns, widthImg) {
     img.width = widthImg
     img.onload = () => {
       let selector = id
-      setTimeout(() =>{
-        img.classList.remove('loading') 
+      setTimeout(() => {
+        img.classList.remove('loading')
         img.classList.add('loaded')
       }, 500)
     }
@@ -239,20 +239,20 @@ function pintarImagenes(data, columns, widthImg) {
     divContenedor.appendChild(img)
     contenedor.appendChild(divContenedor)
     const btnDownload = document.createElement('a')
-    btnDownload.setAttribute('rel', "nofollow")
-    btnDownload.setAttribute('target', "_blank")
-    btnDownload.href = largeImageURL+"?attachment"
-    btnDownload.className = "btn-download absolute z-50 bottom-3 right-3"
-    btnDownload.textContent = ""
-    
+    btnDownload.setAttribute('rel', 'nofollow')
+    btnDownload.setAttribute('target', '_blank')
+    btnDownload.href = largeImageURL + '?attachment'
+    btnDownload.className = 'btn-download absolute z-50 bottom-3 right-3'
+    btnDownload.textContent = ''
+
     const divProfile = document.createElement('div')
-    divProfile.className = "user-container opacity-0 flex absolute bottom-0 py-3 px-3 w-full bg-gradient-to-t from-black to-transparent z-40 space-x-2 items-center"
+    divProfile.className = 'user-container opacity-0 flex absolute bottom-0 py-3 px-3 w-full bg-gradient-to-t from-black to-transparent z-40 space-x-2 items-center'
     divProfile.innerHTML = `
     <img src="${userImageURL}" class="object-contain rounded-full" height="30" width="30" alt="image-${user}">
     <p class="text-white font-medium text-sm">${user}</p>
     `
     const divLike = document.createElement('div')
-    divLike.className = "opacity-0 container-link  absolute z-40 top-2 rounded bg-gray-200 p-2 right-3 flex space-x-2 items-center justify-end"
+    divLike.className = 'opacity-0 container-link  absolute z-40 top-2 rounded bg-gray-200 p-2 right-3 flex space-x-2 items-center justify-end'
     divLike.innerHTML = `
     <p class=" font-medium text-xs">${favorites}</p>
     <svg class="w-4 h-4" fill="rgb(50, 50, 50)" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"></path></svg>
@@ -261,12 +261,10 @@ function pintarImagenes(data, columns, widthImg) {
     divContenedor.appendChild(btnDownload)
     divContenedor.appendChild(divProfile)
     divContenedor.appendChild(divLike)
-    
-
   })
-  console.log(results)
+  // console.log(results)
 }
- 
+
 function noMorePagination() {
   document.querySelector('.msg').innerHTML = `
   <p class="text-2xl font-bold text-center py-2">No hay mas resultados :( </p>
@@ -275,25 +273,35 @@ function noMorePagination() {
   `
 }
 
+bgHero()
+function bgHero() {
+  let random = Math.round(Math.random(2))
 
-// bgHero()
-function bgHero(){
   const imgHero = document.querySelector('.img-hero')
-  fetch('https://pixabay.com/api/?key=13360577-1ec6494e0daacc37a199a6648&q=paisaje%C2%A0&image_type=all&per_page=100&page=1')
-  .then(resp => resp.json())
-  .then(img => imgHero.setAttribute('src', img.hits[Math.ceil(Math.random()*100)].largeImageURL))
-  .catch(err => {
-    console.log(err)
-    imgHero.setAttribute('src', "https://pixabay.com/get/gbd8c58c28db3bd388acab98174aafa9a7021917d6ccb8dcfc66e7613ecc9caa69bb61cbbb5dd0f0f3fef91c32933f530728e1b2e2072894b44680164af464efd_1280.jpg")
-  })
+  const videoHero = document.querySelector('.container-video')
+  if (random === 1) {
+    console.log("img")
+    fetch('https://pixabay.com/api/?key=13360577-1ec6494e0daacc37a199a6648&q=paisaje%C2%A0&image_type=all&per_page=100&page=1')
+      .then((resp) => resp.json())
+      .then((img) => imgHero.setAttribute('src', img.hits[Math.ceil(Math.random() * 100)].largeImageURL))
+      .catch((err) => {
+        console.log(err)
+        imgHero.setAttribute(
+          'src',
+          'https://pixabay.com/get/gbd8c58c28db3bd388acab98174aafa9a7021917d6ccb8dcfc66e7613ecc9caa69bb61cbbb5dd0f0f3fef91c32933f530728e1b2e2072894b44680164af464efd_1280.jpg'
+        )
+      })
+  } else {
+    console.log("video")
+    imgHero.classList.add('hidden')
+    videoHero.classList.remove('hidden')
+  }
 }
 
 window.addEventListener('scroll', () => {
-  document.querySelectorAll('img[src]').forEach(elem =>{
-
-    if(elem.getAttribute('src') ===""){
-      elem.setAttribute("src", "http://www.jdevoto.cl/web/wp-content/uploads/2018/04/default-user-img.jpg")
+  document.querySelectorAll('.resultado img[src]').forEach((elem) => {
+    if (elem.getAttribute('src') === '') {
+      elem.setAttribute('src', 'http://www.jdevoto.cl/web/wp-content/uploads/2018/04/default-user-img.jpg')
     }
-
   })
 })
