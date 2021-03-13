@@ -83,11 +83,15 @@ window.onload = () => {
   // scroll
   const observer = new IntersectionObserver((entries) => {
     if (newPage) {
+      console.log("entre")
       pagina++
       buscarImagenes()
     }
   })
-  observer.observe(document.querySelector('.observer'))
+
+    if(newPage)
+    observer.observe(document.querySelector('.observer'))
+
   // buscarImagenes()
 }
 
@@ -95,6 +99,7 @@ function popularSelected(e) {
   e.preventDefault(e)
   if (e.target.tagName === 'A') {
     results = []
+    newPage = true
     pagina = 1
     document.querySelector('.msg').innerHTML = ``
     while (divResultado.firstChild) {
@@ -106,28 +111,18 @@ function popularSelected(e) {
   }
 }
 
-// window.addEventListener('resize', () => {
-//   while (divResultado.firstChild) {
-//     divResultado.removeChild(divResultado.firstChild)
-//   }
-//   calcularColumns()
-// })
-
 window.addEventListener('scroll', () => {
   let alturas = []
   document.querySelectorAll('.resultado > div').forEach((elem) => {
     alturas = [...alturas, elem.offsetHeight]
   })
   let alturaFinal = Math.max(...alturas)
-  //  console.log(alturas)
-  // console.log(Math.max(...alturas))
   document.querySelector('.observer').style.top = alturaFinal - 2300 + 'px'
 })
 
 function validarFormulario(e) {
   e.preventDefault()
   results = []
-  newPage = true
   document.querySelector('.msg').innerHTML = ``
   pagina = 1
   while (divResultado.firstChild) {
@@ -141,18 +136,17 @@ function buscarImagenes() {
   const opcion = document.querySelector('#option-select').getAttribute('data-target')
   const key = '13360577-1ec6494e0daacc37a199a6648'
   busqueda = busqueda.replace(/ /g, '+')
-  const url = `https://pixabay.com/api/?key=${key}&q=${busqueda}&image_type=${opcion}&per_page=100&page=${pagina}`
+  const url = `https://pixabay.com/api/?key=${key}&q=${busqueda}&image_type=${opcion}&per_page=50&page=${pagina}`
   fetch(url)
     .then((resp) => resp.json())
     .then((json) => {
       results = [...results, json.hits]
       calcularColumns(json.hits)
-      // console.log(json.hits.length)
-      newPage = true
-      // console.log(json.totalHits, results.flat(999).length)
       if (results.flat(999).length >= json.totalHits) {
         newPage = false
         noMorePagination()
+      }else{
+        newPage = true
       }
     })
     .catch((err) => {
@@ -180,13 +174,13 @@ function calcularColumns(data) {
     pintarImagenes(data, cantidadColumn, 550)
   } else if (widthUser > 640 && widthUser <= 768) {
     cantidadColumn = 2
-    pintarImagenes(data, cantidadColumn, 400)
+    pintarImagenes(data, cantidadColumn, 320)
   } else if (widthUser > 768 && widthUser <= 1024) {
     cantidadColumn = 3
-    pintarImagenes(data, cantidadColumn, 430)
+    pintarImagenes(data, cantidadColumn, 300)
   } else if (widthUser > 1024 && widthUser <= 1280) {
     cantidadColumn = 3
-    pintarImagenes(data, cantidadColumn, 430)
+    pintarImagenes(data, cantidadColumn, 340)
   } else if (widthUser > 1280 && widthUser <= 1536) {
     cantidadColumn = 3
     pintarImagenes(data, cantidadColumn, 430)
@@ -280,7 +274,7 @@ function bgHero() {
   const imgHero = document.querySelector('.img-hero')
   const videoHero = document.querySelector('.container-video')
   if (random === 1) {
-    console.log("img")
+    console.log('img')
     fetch('https://pixabay.com/api/?key=13360577-1ec6494e0daacc37a199a6648&q=paisaje%C2%A0&image_type=all&per_page=100&page=1')
       .then((resp) => resp.json())
       .then((img) => imgHero.setAttribute('src', img.hits[Math.ceil(Math.random() * 100)].largeImageURL))
@@ -292,7 +286,7 @@ function bgHero() {
         )
       })
   } else {
-    console.log("video")
+    console.log('video')
     imgHero.classList.add('hidden')
     videoHero.classList.remove('hidden')
   }
