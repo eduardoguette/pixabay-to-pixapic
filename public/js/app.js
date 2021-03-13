@@ -287,3 +287,13 @@ function bgHero(){
     imgHero.setAttribute('src', "https://pixabay.com/get/gbd8c58c28db3bd388acab98174aafa9a7021917d6ccb8dcfc66e7613ecc9caa69bb61cbbb5dd0f0f3fef91c32933f530728e1b2e2072894b44680164af464efd_1280.jpg")
   })
 }
+
+window.addEventListener('scroll', () => {
+  document.querySelectorAll('img[src]').forEach(elem =>{
+
+    if(elem.getAttribute('src') ===""){
+      elem.setAttribute("src", "http://www.jdevoto.cl/web/wp-content/uploads/2018/04/default-user-img.jpg")
+    }
+
+  })
+})
