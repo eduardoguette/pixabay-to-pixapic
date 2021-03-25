@@ -4,12 +4,22 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "limpiacss": "purgecss --css ./public/css/tailwind.css --content ./public/index.html --output ./public/css/tailwind-min.css",
+    "buildcss": "npx tailwindcss-cli@latest build ./src/recursos-tailwind.css -o ./public/css/tailwind.css",
+    "build": "postcss ./src/recursos-tailwind.css -o ./public/css/tailwind.css",
+    "prod": "NODE_ENV=production postcss ./src/recursos-tailwind.css -o ./public/css/tailwind.css"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "tailwindcss": "^2.0.3"
+    "@fullhuman/postcss-purgecss": "^4.0.3",
+    "autoprefixer": "^10.2.5",
+    "postcss-cli": "^8.3.1",
+    "tailwindcss": "^2.0.3",
+    "win-node-env": "^0.4.0"
+  },
+  "devDependencies": {
+    "purgecss": "^4.0.3"
   }
 }

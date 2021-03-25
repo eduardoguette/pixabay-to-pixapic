@@ -211,3 +211,9 @@ img[id="preview"][class*="zoom-in"] ~ div{
   
   background-color: rgb(62, 62, 62);
 }
+#name-user-preview{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 75px;
+}
