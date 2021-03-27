@@ -278,18 +278,16 @@ function bgHero() {
   let random = Math.round(Math.random(2));
 
   const imgHero = document.querySelector('.img-hero');
+  imgHero.src="./images/image-hero.jpg"
   const videoHero = document.querySelector('.container-video');
   if (random === 1) {
-    console.log('img');
     fetch('https://pixabay.com/api/?key=13360577-1ec6494e0daacc37a199a6648&q=paisaje%C2%A0&image_type=all&per_page=100&page=1')
       .then((resp) => resp.json())
-      .then((img) => imgHero.setAttribute('src', img.hits[Math.ceil(Math.random() * 100)].largeImageURL))
+      .then((img) => imgHero.setAttribute('src', img.hits[Math.ceil(Math.random() * 10)].largeImageURL))
       .catch((err) => {
         console.log(err);
-        imgHero.setAttribute(
-          'src',
-          'https://pixabay.com/get/gbd8c58c28db3bd388acab98174aafa9a7021917d6ccb8dcfc66e7613ecc9caa69bb61cbbb5dd0f0f3fef91c32933f530728e1b2e2072894b44680164af464efd_1280.jpg'
-        );
+        imgHero.classList.remove('hidden');
+        videoHero.classList.add('hidden');
       });
   } else {
     console.log('video');
