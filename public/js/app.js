@@ -45,6 +45,7 @@ window.onload = () => {
 
       userNamePreview.textContent = nameUser;
       linkDownload.setAttribute('href', imageFullScreen + '?attachment');
+      linkDownload.setAttribute('rel', 'noopener');
       userImgPreview.setAttribute('src', userImage);
       userImgPreview.setAttribute('alt', nameUser);
       imgPreview.setAttribute('src', imageFullScreen);
@@ -239,7 +240,7 @@ function pintarImagenes(data, columns, widthImg) {
     divContenedor.appendChild(img);
     contenedor.appendChild(divContenedor);
     const btnDownload = document.createElement('a');
-    btnDownload.setAttribute('rel', 'nofollow');
+    btnDownload.setAttribute('rel', 'nofollow noopener');
     btnDownload.setAttribute('target', '_blank');
     btnDownload.href = largeImageURL + '?attachment';
     btnDownload.className = 'btn-download absolute z-50 bottom-3 right-3';
@@ -278,7 +279,7 @@ function bgHero() {
   let random = Math.round(Math.random(2));
 
   const imgHero = document.querySelector('.img-hero');
-  imgHero.src="./images/image-hero.jpg"
+  imgHero.src = './images/image-hero.jpg';
   const videoHero = document.querySelector('.container-video');
   if (random === 1) {
     fetch('https://pixabay.com/api/?key=13360577-1ec6494e0daacc37a199a6648&q=paisaje%C2%A0&image_type=all&per_page=100&page=1')
