@@ -1,7 +1,7 @@
 {
   "name": "PixaPic",
   "short_name": "px",
-  "start_url": "/index.html",
+  "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#d41872",
   "theme_color": "#d41872",
